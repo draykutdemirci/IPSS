@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPSS Testi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #334155;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .question-card {
+            background-color: #f8fafc;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid #e2e8f0;
+        }
+        .radio-label {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            margin-bottom: 0.5rem;
+        }
+        .radio-label:hover {
+            background-color: #e2e8f0;
+        }
+        input[type="radio"]:checked + span {
+            font-weight: 600;
+            color: #2563eb;
+        }
+        input[type="radio"] {
+            margin-right: 0.75rem;
+            accent-color: #2563eb;
+        }
+        .result-box {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        .button-primary {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .button-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+        }
+        .button-primary:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+        }
+        .modal-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1e3a8a;
+        }
+        .modal-content p {
+            margin-bottom: 1.5rem;
+            color: #475569;
+        }
+        .modal-content button {
+            background-color: #2563eb;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .modal-content button:hover {
+            background-color: #1d4ed8;
+        }
+    </style>
+</head>
+<body class="p-4">
+    <div class="container">
+        <h1 class="text-3xl font-bold text-center mb-6 text-gray-800">IPSS Testi - BPH Semptom Değerlendirme</h1>
+        <p class="text-center text-gray-600 mb-8">Tüm rakamlar son dört hafta ile ilgilidir.</p>
+
+        <form id="ipssForm">
+            <div class="question-card">
+                <p class="font-medium text-lg mb-3">1. İdrara çıktıktan sonra mesanenizin tamamen boşalmadığını ne sıklıkta hissettiniz?</p>
+                <div class="space-y-2">
+                    <label class="radio-label">
+                        <input type="radio" name="q1" value="0" required>
+                        <span>0 - Hiçbir zaman</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q1" value="1">
+                        <span>1 - Beş vakanın birinde görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q1" value="2">
+                        <span>2 - Vakaların yarısında görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q1" value="3">
+                        <span>3 - Aşağı yukarı vakaların yarısında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q1" value="4">
+                        <span>4 - Vakaların yarısından fazlasında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q1" value="5">
+                        <span>5 - Neredeyse her zaman</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="font-medium text-lg mb-3">2. İki saat içinde kaç kez ikinci defa idrara çıkmak zorunda kaldınız?</p>
+                <div class="space-y-2">
+                    <label class="radio-label">
+                        <input type="radio" name="q2" value="0" required>
+                        <span>0 - Hiçbir zaman</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q2" value="1">
+                        <span>1 - Beş vakanın birinde görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q2" value="2">
+                        <span>2 - Vakaların yarısında görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q2" value="3">
+                        <span>3 - Aşağı yukarı vakaların yarısında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q2" value="4">
+                        <span>4 - Vakaların yarısından fazlasında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q2" value="5">
+                        <span>5 - Neredeyse her zaman</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="font-medium text-lg mb-3">3. İdrara çıkarken, kaç kez idrarı defalarca yarıda kesip tekrar başlamak durumunda kaldınız (kesik kesik idrara çıkma)?</p>
+                <div class="space-y-2">
+                    <label class="radio-label">
+                        <input type="radio" name="q3" value="0" required>
+                        <span>0 - Hiçbir zaman</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q3" value="1">
+                        <span>1 - Beş vakanın birinde görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q3" value="2">
+                        <span>2 - Vakaların yarısında görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q3" value="3">
+                        <span>3 - Aşağı yukarı vakaların yarısında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q3" value="4">
+                        <span>4 - Vakaların yarısından fazlasında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q3" value="5">
+                        <span>5 - Neredeyse her zaman</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="font-medium text-lg mb-3">4. Ne sıklıkta idrara çıkmakta güçlük yaşadınız?</p>
+                <div class="space-y-2">
+                    <label class="radio-label">
+                        <input type="radio" name="q4" value="0" required>
+                        <span>0 - Hiçbir zaman</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q4" value="1">
+                        <span>1 - Beş vakanın birinde görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q4" value="2">
+                        <span>2 - Vakaların yarısında görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q4" value="3">
+                        <span>3 - Aşağı yukarı vakaların yarısında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q4" value="4">
+                        <span>4 - Vakaların yarısından fazlasında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q4" value="5">
+                        <span>5 - Neredeyse her zaman</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="font-medium text-lg mb-3">5. İdrara çıkarken ne sıklıkta zayıf idrar akışı vardı?</p>
+                <div class="space-y-2">
+                    <label class="radio-label">
+                        <input type="radio" name="q5" value="0" required>
+                        <span>0 - Hiçbir zaman</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q5" value="1">
+                        <span>1 - Beş vakanın birinde görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q5" value="2">
+                        <span>2 - Vakaların yarısında görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q5" value="3">
+                        <span>3 - Aşağı yukarı vakaların yarısında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q5" value="4">
+                        <span>4 - Vakaların yarısından fazlasında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q5" value="5">
+                        <span>5 - Neredeyse her zaman</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="font-medium text-lg mb-3">6. İdrara çıkabilmek için ne sıklıkta ıkınmak veya kendinizi zorlamak zorunda kaldınız?</p>
+                <div class="space-y-2">
+                    <label class="radio-label">
+                        <input type="radio" name="q6" value="0" required>
+                        <span>0 - Hiçbir zaman</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q6" value="1">
+                        <span>1 - Beş vakanın birinde görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q6" value="2">
+                        <span>2 - Vakaların yarısında görülenden daha nadir</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q6" value="3">
+                        <span>3 - Aşağı yukarı vakaların yarısında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q6" value="4">
+                        <span>4 - Vakaların yarısından fazlasında</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q6" value="5">
+                        <span>5 - Neredeyse her zaman</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <p class="font-medium text-lg mb-3">7. İdrar yapmak için geceleri ortalama olarak ne sıklıkta kalktınız? (yatağa yattığınız andan sabah yataktan kalktığınız ana kadar geçen süre kriter olarak alınır)</p>
+                <div class="space-y-2">
+                    <label class="radio-label">
+                        <input type="radio" name="q7" value="0" required>
+                        <span>0 - Hiçbir zaman</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q7" value="1">
+                        <span>1 - Bir kez</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q7" value="2">
+                        <span>2 - İki kez</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q7" value="3">
+                        <span>3 - Üç kez</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q7" value="4">
+                        <span>4 - Dört kez</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="q7" value="5">
+                        <span>5 - Beş veya daha fazla kez</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">IPSS-Q8 (YAŞAM KALİTESİ İNDEKSİ QOL)</h2>
+                <p class="font-medium text-lg mb-3">İdrara çıkarken görülen mevcut belirtilerinizde zaman içinde değişiklik olmasaydı kendinizi nasıl hissederdiniz?</p>
+                <div class="space-y-2">
+                    <label class="radio-label">
+                        <input type="radio" name="qol" value="0" required>
+                        <span>0 - Mükemmel</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="qol" value="1">
+                        <span>1 - Memnun</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="qol" value="2">
+                        <span>2 - Büyük ölçüde memnun</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="qol" value="3">
+                        <span>3 - Kısmen memnun, kısmen memnun değil</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="qol" value="4">
+                        <span>4 - Büyük ölçüde memnun değil</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="qol" value="5">
+                        <span>5 - Mutsuz</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="qol" value="6">
+                        <span>6 - Çok kötü</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button type="submit" class="button-primary">Sonuçları Hesapla</button>
+            </div>
+        </form>
+
+        <div id="result" class="result-box hidden">
+            <h3 class="text-2xl font-bold mb-3 text-blue-800">IPSS Sonucunuz</h3>
+            <p class="text-xl mb-2">Toplam Puanınız: <span id="totalScore" class="font-semibold"></span></p>
+            <p class="text-lg mb-4" id="scoreInterpretation"></p>
+
+            <h3 class="text-2xl font-bold mb-3 text-blue-800">Yaşam Kalitesi İndeksi</h3>
+            <p class="text-xl">Yaşam kalitesi gösterge indeksi = <span id="qolScore" class="font-semibold"></span></p>
+        </div>
+
+        <div class="mt-8 text-gray-500 text-sm leading-relaxed">
+            <p class="mb-2"><strong>Referanslar:</strong></p>
+            <ul class="list-disc list-inside">
+                <li>Barry MJ. ve ark.. The American Urological Association symptom index for benign prostatic hyperplasia. The Measurement Committee of the American Urological Association. J. Urol. 1992 Kas; 148(5): 1549-57</li>
+                <li>Cockett ATK. ve ark.: Recommendations of the International Consensus Committee concerning Prostate Symptom Score (IPSS) and Quality of Life Assessment, in The 2nd International Consultation on Benign Prostatic Hyperplasia (BPH). WHO'nun desteğiyle. SCI, 1994, sf. 553-55.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="customModal" class="modal">
+        <div class="modal-content">
+            <h3 id="modalTitle"></h3>
+            <p id="modalMessage"></p>
+            <button id="modalCloseButton">Kapat</button>
+        </div>
+    </div>
+
+    <script>
+        // Get references to elements
+        const ipssForm = document.getElementById('ipssForm');
+        const resultDiv = document.getElementById('result');
+        const totalScoreSpan = document.getElementById('totalScore');
+        const scoreInterpretationSpan = document.getElementById('scoreInterpretation');
+        const qolScoreSpan = document.getElementById('qolScore');
+        const customModal = document.getElementById('customModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCloseButton = document.getElementById('modalCloseButton');
+
+        // Function to show the custom modal
+        function showModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            customModal.classList.add('show');
+        }
+
+        // Function to hide the custom modal
+        function hideModal() {
+            customModal.classList.remove('show');
+        }
+
+        // Event listener for modal close button
+        modalCloseButton.addEventListener('click', hideModal);
+        customModal.addEventListener('click', (e) => {
+            if (e.target === customModal) {
+                hideModal();
+            }
+        });
+
+        // Event listener for form submission
+        ipssForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            let totalIPSSScore = 0;
+            let allQuestionsAnswered = true;
+            let qolScore = -1; // Initialize QoL score
+
+            // Calculate IPSS score
+            for (let i = 1; i <= 7; i++) {
+                const questionName = `q${i}`;
+                const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+                if (selectedOption) {
+                    totalIPSSScore += parseInt(selectedOption.value);
+                } else {
+                    allQuestionsAnswered = false;
+                    break; // Exit loop if any question is not answered
+                }
+            }
+
+            // Get Quality of Life score
+            const qolSelectedOption = document.querySelector('input[name="qol"]:checked');
+            if (qolSelectedOption) {
+                qolScore = parseInt(qolSelectedOption.value);
+            } else {
+                allQuestionsAnswered = false;
+            }
+
+            if (!allQuestionsAnswered) {
+                showModal('Uyarı', 'Lütfen tüm soruları yanıtlayın.');
+                return;
+            }
+
+            // Display total IPSS score
+            totalScoreSpan.textContent = totalIPSSScore;
+
+            // Interpret IPSS score
+            let interpretation = '';
+            if (totalIPSSScore >= 0 && totalIPSSScore <= 7) {
+                interpretation = 'Hafif belirtiler';
+            } else if (totalIPSSScore >= 8 && totalIPSSScore <= 19) {
+                interpretation = 'Orta düzeyde belirtiler';
+            } else if (totalIPSSScore >= 20 && totalIPSSScore <= 35) {
+                interpretation = 'Şiddetli belirtiler';
+            }
+            scoreInterpretationSpan.textContent = interpretation;
+
+            // Display QoL score
+            qolScoreSpan.textContent = qolScore;
+
+            // Show the result section
+            resultDiv.classList.remove('hidden');
+
+            // Optionally, save results to localStorage
+            const resultData = {
+                date: new Date().toLocaleString('tr-TR'),
+                ipssScore: totalIPSSScore,
+                ipssInterpretation: interpretation,
+                qolScore: qolScore
+            };
+            let savedResults = JSON.parse(localStorage.getItem('ipssResults')) || [];
+            savedResults.push(resultData);
+            localStorage.setItem('ipssResults', JSON.stringify(savedResults));
+
+            // Scroll to results
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
